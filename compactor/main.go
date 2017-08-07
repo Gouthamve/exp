@@ -8,9 +8,11 @@ import (
 	"math/rand"
 	"os"
 	"path/filepath"
+	"time"
 	"unsafe"
 
 	"github.com/go-kit/kit/log"
+	"github.com/pkg/profile"
 	promlabels "github.com/prometheus/prometheus/pkg/labels"
 	"github.com/prometheus/prometheus/pkg/textparse"
 	"github.com/prometheus/tsdb"
@@ -26,6 +28,10 @@ func main() {
 	if err != nil {
 		golog.Fatalln(err)
 	}
+
+	fmt.Println("The compacting of the blocks will start soon")
+	time.Sleep(30 * time.Second)
+	defer profile.Start(profile.MemProfile, profile.ProfilePath(".")).Stop()
 	fmt.Println(c.Compact(dirs...))
 }
 
